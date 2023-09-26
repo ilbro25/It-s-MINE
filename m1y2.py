@@ -18,6 +18,13 @@ def pass_gen(lenpassword):
         password += random.choice(elements)
     return password
 
+def coinflip():
+    flip = random.randint(0,1)
+    if flip == 0:
+        return "Решка"
+    else:
+        return "Орёл"
+
 @bot.command()
 async def hello(ctx):
     await ctx.send(f'Привет! Я бот {bot.user}!')
@@ -46,6 +53,10 @@ async def password(ctx, count = 10):
     await ctx.send(f'Ваш пароль - {pass_gen(count)}')
 
 @bot.command()
+async def coin(ctx):
+    await ctx.send(f'{coinflip()}')
+
+@bot.command()
 async def roll(ctx, dice: str):
     """Rolls a dice in NdN format."""
     try:
@@ -53,7 +64,20 @@ async def roll(ctx, dice: str):
     except Exception:
         await ctx.send('Format has to be in NdN!')
         return
-
     result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
     await ctx.send(result)
+
+@bot.command()
+async def helpme(ctx):
+    await ctx.send(f'''
+                   Все команды вводятся без скобок!!!
+/hello
+/bye
+/coin - подбрасывает монетку
+/heh (n) - выводит 'he' n-ое количество раз
+/add (число1) (число2) - складывает 2 числа
+/repeat (n) (текст) - повторяет текст n-ое количество раз
+/password (n) - генерация пароля с n-ым количеством символов
+/roll (n)d(b) - выводит рандомные числа 1-b количество раз n
+                   ''')
 bot.run("token")
